@@ -23,7 +23,9 @@ const modifier = (text) => {
         state.message = 'Current Keys:\n\n' + worldEntries.map(e => '(' + e.keys + ')').join(', ');
         break;
       case 'showKey':
-        state.message = 'showKey';
+        if (!input[1]) state.message = 'Usage: /showKey "<key>"';
+        else if (!currentEntries.includes(input[1])) state.message = 'Key "' + input[1] + '" does not exist!';
+        else state.message = input[1] + ':\n\n' + worldEntries.filter(e => e.keys.includes(input[1])).map(e => e.entry).join('\n\n');
         break;
       case 'addKey':
         state.message = 'addKey';
