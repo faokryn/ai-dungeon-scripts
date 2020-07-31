@@ -28,7 +28,7 @@ const modifier = (text) => {
         else state.message = input[1] + ':\n\n' + worldEntries.filter(e => e.keys.includes(input[1])).map(e => e.entry).join('\n\n');
         break;
       case 'addKey':
-        if (!input[1] || !input[2]) state.message = 'Usage: /addKey "<key>" entry';
+        if (!input[1] || !input[2]) state.message = 'Usage: /addKey "<key>" <entry>';
         else if (currentEntries.includes(input[1])) state.message = 'Key "' + input[1] + '" already exists! Use /modKey or /appendKey instead.';
         else {
           let entry = input.filter((e,i) => i > 1).join('"').trim();
@@ -56,7 +56,7 @@ const modifier = (text) => {
         }
         break;
       case 'modKey':
-        if (!input[1] || !input[2]) state.message = 'Usage: /modKey "<key>" entry';
+        if (!input[1] || !input[2]) state.message = 'Usage: /modKey "<key>" <entry>';
         else if (!currentEntries.includes(input[1])) state.message = 'Key "' + input[1] + '" does not exist! Use /addKey instead.';
         else {
           let entry = input.filter((e,i) => i > 1).join('"').trim();
@@ -72,7 +72,7 @@ const modifier = (text) => {
         }
         break;
       case 'appendKey':
-        if (!input[1] || !input[2]) state.message = 'Usage: /appendKey "<key>" addition';
+        if (!input[1] || !input[2]) state.message = 'Usage: /appendKey "<key>" <addendum>';
         else if (!currentEntries.includes(input[1])) state.message = 'Key "' + input[1] + '" does not exist! Use /addKey instead.';
         else {
           let entry;
@@ -109,7 +109,14 @@ const modifier = (text) => {
         }
         break;
       default:
-        state.message = 'default:\n' + JSON.stringify(input);
+        state.message = 'Available Commands:' + '\n\n' +
+                        '/listKeys\nShow currently stored sets of keys.\n\n' +
+                        '/showKey "<key>"\nShow entry stored for <key>.\n\n' +
+                        '/addKey "<key>" <entry>\nStore <entry> under new key <key>.\n\n' +
+                        '/removeKey "<key>"\nRemove <key> (if there are other keys for the entry, they will remain).\n\n' +
+                        '/modKey "<key>" <entry>\nReplace entry stored at <key> with <entry>.\n\n' +
+                        '/appendKey "<key>" <addendum>\nAdd <addendum> to the end of the entry stored at <key>.\n\n' +
+                        '/aliasKey "<key>" "<alias>"\nAdd <alias> as an additional key for the entry stored at <key>.\n\n';
     }
   }
 
