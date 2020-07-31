@@ -91,7 +91,22 @@ const modifier = (text) => {
         }
         break;
       case 'aliasKey':
-        state.message = 'aliasKey';
+        if (!input[1] || !input[3]) state.message = 'Usage: /aliasKey "<key>" "<alias>"';
+        else if (!currentEntries.includes(input[1])) state.message = 'Key "' + input[1] + '" does not exist!';
+        else if (currentEntries.includes(input[3])) state.message = 'Key "' + input[3] + '" already exist!';
+        else {
+          let entryCount = 0;
+          worldEntries.forEach((e, i) => {
+            if (e.keys.includes(input[1])) {
+              entryCount++;
+              if (entryCount === 1) {
+                updateWorldEntry(i, e.keys + ', ' + input[3], e.entry);
+              }
+            }
+          });
+          state.message = 'Alias "' + input[3] + '" added for key "' + input[1] + '".'
+          if (entryCount > 1) state.message = 'WARNING: Multiple entries with key "' + input[1] + '". Only aliased first.\n\n' + state.message;
+        }
         break;
       default:
         state.message = 'default:\n' + JSON.stringify(input);
