@@ -20,7 +20,7 @@ const modifier = (text) => {
 
     switch (input[0]) {
       case 'listKeys':
-        state.message = 'listKeys';
+        state.message = 'Current Keys:\n\n' + worldEntries.map(e => '(' + e.keys + ')').join(', ');
         break;
       case 'showKey':
         state.message = 'showKey';
