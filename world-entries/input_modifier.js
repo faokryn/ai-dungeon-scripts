@@ -56,7 +56,20 @@ const modifier = (text) => {
         }
         break;
       case 'modKey':
-        state.message = 'modKey';
+        if (!input[1] || !input[2]) state.message = 'Usage: /modKey "<key>" entry';
+        else if (!currentEntries.includes(input[1])) state.message = 'Key "' + input[1] + '" does not exist! Use /addKey instead.';
+        else {
+          let entry = input.filter((e,i) => i > 1).join('"').trim();
+          let entryCount = 0;
+          worldEntries.forEach((e, i) => {
+            if (e.keys.includes(input[1])) {
+              entryCount++;
+              if (entryCount === 1) updateWorldEntry(i, e.keys, entry);
+            }
+          });
+          state.message = input[1] + ':\n\n' + entry;
+          if (entryCount > 1) state.message = 'WARNING: Multiple entries with key "' + input[1] + '". Only modified first.\n\n' + state.message;
+        }
         break;
       case 'appendKey':
         state.message = 'appendKey';
